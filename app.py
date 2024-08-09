@@ -9,7 +9,8 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.chains.question_answering import load_qa_chain
 from langchain.prompts import PromptTemplate
 from dotenv import load_dotenv
-
+import pytesseract
+from PIL import Image
 load_dotenv()
 os.getenv("GOOGLE_API_KEY")
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
@@ -17,12 +18,19 @@ genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 # read all pdf files and return text
 
 
-def get_pdf_text(pdf_docs):
+def get_text(docs):
     text = ""
-    for pdf in pdf_docs:
-        pdf_reader = PdfReader(pdf)
-        for page in pdf_reader.pages:
-            text += page.extract_text()
+    for file in docs:
+        file_extension = os.path.splitext(file.name)[1]
+        print(file_extension)
+        if(file_extension == ".pdf"):
+            pdf_reader = PdfReader(file)
+            for page in pdf_reader.pages:
+                text += page.extract_text()
+        else:
+            extractedInformation = pytesseract.image_to_string(Image.open(file))
+            text += extractedInformation
+
     return text
 
 # split text into chunks
@@ -94,11 +102,11 @@ def main():
     # Sidebar for uploading PDF files
     with st.sidebar:
         st.title("Menu:")
-        pdf_docs = st.file_uploader(
-            "Upload your PDF Files and Click on the Submit & Process Button",type=["pdf"], accept_multiple_files=True)
+        docs = st.file_uploader(
+            "Upload your PDF Files and Click on the Submit & Process Button",type=["pdf","jpg","png","jpeg"], accept_multiple_files=True)
         if st.button("Submit & Process"):
             with st.spinner("Processing..."):
-                raw_text = get_pdf_text(pdf_docs)
+                raw_text = get_text(docs)
                 text_chunks = get_text_chunks(raw_text)
                 get_vector_store(text_chunks)
                 st.success("Done")
