@@ -14,6 +14,7 @@ from PIL import Image
 load_dotenv()
 os.getenv("GOOGLE_API_KEY")
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+model_name = os.getenv("GEMINI_MODEL")
 
 # read all pdf files and return text
 
@@ -62,7 +63,7 @@ def get_conversational_chain():
     Answer:
     """
 
-    model = ChatGoogleGenerativeAI(model="gemini-2.5-flash-preview-04-17",
+    model = ChatGoogleGenerativeAI(model=model_name,
                                    client=genai,
                                    temperature=0.3,
                                    )
