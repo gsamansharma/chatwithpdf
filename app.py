@@ -1,21 +1,17 @@
 import os
 from PyPDF2 import PdfReader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 import streamlit as st
-import google.generativeai as genai
 from langchain_community.vectorstores import FAISS
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain.chains.question_answering import load_qa_chain
-from langchain.prompts import PromptTemplate
+from langchain_groq import ChatGroq
+from langchain_classic.chains.question_answering import load_qa_chain
+from langchain_core.prompts import PromptTemplate
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from dotenv import load_dotenv
 import pytesseract
 from PIL import Image
 load_dotenv()
-os.getenv("GOOGLE_API_KEY")
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-model_name = os.getenv("GEMINI_MODEL")
+
 
 # read all pdf files and return text
 
@@ -65,10 +61,10 @@ def get_conversational_chain():
     Answer:
     """
 
-    model = ChatGoogleGenerativeAI(model=model_name,
-                                   client=genai,
-                                   temperature=0.3,
-                                   )
+    model = ChatGroq(model=os.getenv("GROQ_MODEL"),
+                     api_key=os.getenv("GROQ_API_KEY"),
+                     temperature=0.3
+                     )
     prompt = PromptTemplate(template=prompt_template,
                             input_variables=["context", "question"])
     chain = load_qa_chain(llm=model, chain_type="stuff", prompt=prompt)
