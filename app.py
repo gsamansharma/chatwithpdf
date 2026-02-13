@@ -95,7 +95,7 @@ def user_input(user_question):
 
 def main():
     st.set_page_config(
-        page_title="PDF Chatbot",
+        page_title="Chat With PDF File",
         page_icon=""
     )
 
@@ -112,7 +112,7 @@ def main():
                 st.success("Done")
 
     # Main content area for displaying chat messages
-    st.title("Chat with PDF files")
+    st.title("Chat With PDF File")
     st.write("Welcome to the chat!")
     st.sidebar.button('Clear Chat History', on_click=clear_chat_history)
 

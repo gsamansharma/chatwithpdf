@@ -1,6 +1,6 @@
-# DocuSense
+# Chat With PDF File
 
-Gemini PDF Chatbot is a Streamlit-based application that allows users to chat with a conversational AI model trained on PDF documents. The chatbot extracts information from uploaded PDF files and answers user questions based on the provided context.
+Chat With PDF File is a Streamlit-based application that allows users to chat with a conversational AI model trained on PDF documents. The chatbot extracts information from uploaded PDF files and answers user questions using the **Groq API**.
 <https://chat-with-pdf-file.streamlit.app/>
 
 
@@ -8,96 +8,71 @@ Gemini PDF Chatbot is a Streamlit-based application that allows users to chat wi
 
 - **PDF Upload:** Users can upload multiple PDF files.
 - **Text Extraction:** Extracts text from uploaded PDF files.
-- **Conversational AI:** Uses the Gemini conversational AI model to answer user questions.
+- **Conversational AI:** Uses the **Groq** conversational AI model to answer user questions.
 - **Chat Interface:** Provides a chat interface to interact with the chatbot.
 
-## Getting Started
+## Get Started
 
-If you have docker installed, you can run the application using the following command:
+### Prerequisites
 
-- Obtain a Google API key and set it in the `.env` file.
+- Python 3.13+
+- [uv](https://github.com/astral-sh/uv) (for dependency management)
 
-   ```.env
-   GOOGLE_API_KEY=your_api_key_here
-   ```
-
-```bash
-docker compose up --build
-```
-
-Your application will be available at <http://localhost:8501>.
-
-### Deploying your application to the cloud
-
-First, build your image, e.g.: `docker build -t myapp .`.
-If your cloud uses a different CPU architecture than your development
-machine (e.g., you are on a Mac M1 and your cloud provider is amd64),
-you'll want to build the image for that platform, e.g.:
-`docker build --platform=linux/amd64 -t myapp .`.
-
-Then, push it to your registry, e.g. `docker push myregistry.com/myapp`.
-
-Consult Docker's [getting started](https://docs.docker.com/go/get-started-sharing/)
-docs for more detail on building and pushing.
-
-### References
-
-- [Docker's Python guide](https://docs.docker.com/language/python/)
-
-## Local Development
-
-Follow these instructions to set up and run this project on your local machine.
-
-   **Note:** This project requires Python 3.10 or higher.
+### Installation
 
 1. **Clone the Repository:**
 
    ```bash
-   git clone https://github.com/your-username/gemini-pdf-chatbot.git
+   git clone https://github.com/gsamansharma/chatwithpdf.git
+   cd chatwithpdf
    ```
 
 2. **Install Dependencies:**
 
    ```bash
-   pip install -r requirements.txt
+   uv sync
    ```
 
-3. **Set up Google API Key:**
-   - Obtain a Google API key and set it in the `.env` file.
+3. **Set up Environment Variables:**
+   - Create a `.env` file in the root directory.
+   - Add your Groq API key and Model.
 
-   ```bash
-   GOOGLE_API_KEY=your_api_key_here
+   ```env
+   GROQ_API_KEY=your_groq_api_key_here
+   GROQ_MODEL=llama-3.1-8b-instant
    ```
+   > You can get your API key from [Groq Console](https://console.groq.com/).
 
 4. **Run the Application:**
 
    ```bash
-   streamlit run main.py
+   uv run streamlit run app.py
    ```
 
-5. **Upload PDFs:**
-   - Use the sidebar to upload PDF files.
-   - Click on "Submit & Process" to extract text and generate embeddings.
-
-6. **Chat Interface:**
-   - Chat with the AI in the main interface.
+5. **Usage:**
+   - Upload PDF files using the sidebar.
+   - Click "Submit & Process".
+   - Chat with your documents!
 
 ## Project Structure
 
 - `app.py`: Main application script.
-- `.env`: file which will contain your environment variable.
-- `requirements.txt`: Python packages required for working of the app.
-- `README.md`: Project documentation.
+- `.env`: Environment variables.
+- `pyproject.toml`: Project configuration and dependencies.
+- `README.md`: Documentation.
 
 ## Dependencies
 
-- PyPDF2
-- langchain
-- Streamlit
-- google.generativeai
-- dotenv
+Managed via `uv` in `pyproject.toml`. Key dependencies include:
+- `streamlit`
+- `langchain`
+- `langchain-groq`
+- `chromadb`
+- `faiss-cpu`
+- `sentence-transformers`
 
 ## Acknowledgments
 
-- [Google Gemini](https://ai.google.com/): For providing the underlying language model.
+- [Groq](https://groq.com/): For providing the underlying language model API.
 - [Streamlit](https://streamlit.io/): For the user interface framework.
+- [LangChain](https://langchain.com/): For the LLM orchestration.
