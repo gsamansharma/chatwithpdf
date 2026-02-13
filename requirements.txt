@@ -8,3 +8,6 @@ langchain-community
 pytesseract
 sentence-transformers
 langchain-groq
+langchain-classic
+langchain-core
+langchain-text-splitters
